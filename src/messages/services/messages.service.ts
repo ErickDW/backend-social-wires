@@ -1,27 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { Message } from './../entities/message.entity';
 import { CreateMessageDto, UpdateMessageDto } from './../dtos/messages.dtos';
 
 @Injectable()
 export class MessagesService {
-	private counterId = 1;
-	private messages: Message[] = [
-		{
-			id: 1,
-			userId: 1000,
-			title: 'Titulo del mensaje',
-			message: 'lorem lorem',
-			date: new Date(),
-		},
-	];
+	constructor(
+		@InjectModel(Message.name) private messageModel: Model<Message>,
+	) {}
 
 	findAll() {
-		return this.messages;
+		return this.messageModel.find().exec();
 	}
 
-	findOne(id: number) {
-		const message = this.messages.find((item) => item.id === id);
+	async findOne(id: string) {
+		const message = await this.messageModel.findById(id).exec();
 		if (!message) {
 			throw new NotFoundException(`Message #${id} not found`);
 		}
@@ -29,31 +24,21 @@ export class MessagesService {
 	}
 
 	create(data: CreateMessageDto) {
-		this.counterId = this.counterId + 1;
-		const newMessage = {
-			id: this.counterId,
-			...data,
-		};
-		this.messages.push(newMessage);
-		return newMessage;
+		const newMessge = new this.messageModel(data);
+		return { not: 'Message create', dat: newMessge.save() };
 	}
 
-	update(id: number, changes: UpdateMessageDto) {
-		const message = this.findOne(id);
-		const index = this.messages.findIndex((item) => item.id === id);
-		this.messages[index] = {
-			...message,
-			...changes,
-		};
-		return this.messages[index];
-	}
-
-	remove(id: number) {
-		const index = this.messages.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new NotFoundException(`Message #${id} not found`);
+	update(id: string, changes: UpdateMessageDto) {
+		const message = this.messageModel
+			.findByIdAndUpdate(id, { $set: changes }, { new: true })
+			.exec();
+		if (!message) {
+			throw new NotFoundException(`Product #${id} not found`);
 		}
-		this.messages.splice(index, 1);
-		return true;
+		return { not: 'Message update', dat: message };
+	}
+
+	remove(id: string) {
+		return this.messageModel.findByIdAndDelete(id);
 	}
 }

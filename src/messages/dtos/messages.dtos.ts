@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsDate, IsNumber } from 'class-validator';
+import {
+	IsString,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsDate,
+} from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateMessageDto {
@@ -9,14 +15,18 @@ export class CreateMessageDto {
 
 	@IsString()
 	@IsNotEmpty()
+	@ApiProperty()
 	readonly message: string;
 
+	@IsString()
+	@IsOptional()
 	@IsDate()
-	@IsNotEmpty()
-	readonly date: Date;
+	@ApiProperty()
+	date: Date;
 
 	@IsNumber()
 	@IsNotEmpty()
+	@ApiProperty()
 	readonly userId: number;
 }
 

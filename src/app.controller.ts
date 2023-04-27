@@ -19,4 +19,9 @@ export class AppController {
 	hello() {
 		return 'con /sas/';
 	}
+
+	// @Get('/messages/')
+	// getMessages() {
+	// 	return this.appService.getMessages();
+	// }
 }
