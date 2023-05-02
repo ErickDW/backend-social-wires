@@ -29,5 +29,6 @@ import { MessageModule } from 'src/messages/messages.module';
 	],
 	controllers: [UsersController, MessagesToDayController],
 	providers: [UsersService, MessagesToDaysService],
+	exports: [UsersService],
 })
 export class UsersModule {}

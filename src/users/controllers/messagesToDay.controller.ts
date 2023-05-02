@@ -44,24 +44,16 @@ export class MessagesToDayController {
 		return this.messagesToDaysService.update(id, payload);
 	}
 
+	@Delete(':id')
+	remove(@Param('id') id: string) {
+		return this.messagesToDaysService.remove(id);
+	}
+
 	@Put(':id/messages')
 	updateMessages(
 		@Param('id') id: string,
 		@Body() payload: AddToMessageToDayDto,
 	) {
 		return this.messagesToDaysService.addMessages(id, payload.messgesIds);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.messagesToDaysService.remove(id);
-	}
-
-	@Delete(':id/message/:messageId')
-	removeMessage(
-		@Param('id') id: string,
-		@Param('messageId') messageId: string,
-	) {
-		return this.messagesToDaysService.removeMessage(id, messageId);
 	}
 }

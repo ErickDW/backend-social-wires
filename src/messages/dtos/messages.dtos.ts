@@ -1,9 +1,9 @@
 import {
 	IsString,
 	IsNotEmpty,
-	IsNumber,
 	IsOptional,
 	IsDate,
+	IsMongoId,
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
@@ -24,10 +24,10 @@ export class CreateMessageDto {
 	@ApiProperty()
 	date: Date;
 
-	@IsNumber()
 	@IsNotEmpty()
+	@IsString()
 	@ApiProperty()
-	readonly userId: number;
+	readonly nick: string;
 }
 
 export class UpdateMessageDto extends PartialType(CreateMessageDto) {}

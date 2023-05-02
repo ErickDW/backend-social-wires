@@ -33,7 +33,7 @@ export class MessagesService {
 			.findByIdAndUpdate(id, { $set: changes }, { new: true })
 			.exec();
 		if (!message) {
-			throw new NotFoundException(`Product #${id} not found`);
+			throw new NotFoundException(`Message #${id} not found`);
 		}
 		return { not: 'Message update', dat: message };
 	}

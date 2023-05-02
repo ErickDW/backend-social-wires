@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -16,11 +16,7 @@ export class MessagesToDaysService {
 	) {}
 
 	findAll() {
-		return this.messageToDayModel
-			.find()
-			.populate('users')
-			.populate('messages')
-			.exec();
+		return this.messageToDayModel.find().populate('messages').exec();
 	}
 
 	async findOne(id: string) {
@@ -42,15 +38,14 @@ export class MessagesToDaysService {
 		return this.messageToDayModel.findByIdAndDelete(id);
 	}
 
-	async removeMessage(id: string, productId: string) {
-		const messageToDay = await this.messageToDayModel.findById(id);
-		messageToDay.messages.pull(productId);
-		return messageToDay.save();
-	}
-
 	async addMessages(id: string, messagesIds: string[]) {
-		const messageToDay = await this.messageToDayModel.findById(id);
-		messagesIds.forEach((pId) => messageToDay.messages.push(pId));
-		return messageToDay.save();
+		const messageToDay = await this.messageToDayModel.findByIdAndUpdate(id, {
+			$addToSet: { messages: messagesIds },
+		});
+		if (!messageToDay) {
+			throw new NotFoundException(`messageToDay ${id} not found`);
+		}
+
+		return await messageToDay.save();
 	}
 }
