@@ -12,6 +12,7 @@ import {
 } from './entities/messagesToDay.entity';
 
 import { MessageModule } from 'src/messages/messages.module';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
 	imports: [
@@ -27,7 +28,7 @@ import { MessageModule } from 'src/messages/messages.module';
 			},
 		]),
 	],
-	controllers: [UsersController, MessagesToDayController],
+	controllers: [UsersController, MessagesToDayController, ProfileController],
 	providers: [UsersService, MessagesToDaysService],
 	exports: [UsersService],
 })

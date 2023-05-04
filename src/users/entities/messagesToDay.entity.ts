@@ -7,8 +7,8 @@ import { Message } from '../../messages/entities/message.entity';
 
 @Schema()
 export class MessagesToDay extends Document {
-	@Prop({ type: Date })
-	date: Date;
+	@Prop({ type: String })
+	date: string;
 
 	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
 	userId: User | Types.ObjectId;

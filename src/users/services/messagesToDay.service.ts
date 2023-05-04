@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { MessagesToDay } from '../entities/messagesToDay.entity';
 import {
 	CreateMessageToDayDto,
+	FilterMessagesToDayDto,
 	UpdateMessageToDayDto,
 } from '../dtos/messagesToDay.dto';
 
@@ -15,7 +16,19 @@ export class MessagesToDaysService {
 		private messageToDayModel: Model<MessagesToDay>,
 	) {}
 
-	findAll() {
+	async findAll(params?: FilterMessagesToDayDto) {
+		if (params) {
+			const filters: FilterQuery<MessagesToDay> = {};
+			const { day } = params;
+			if (day) {
+				filters.date = { $regex: day };
+			}
+			const messageToDay = await this.messageToDayModel
+				.find(filters)
+				.populate('messages')
+				.exec();
+			return messageToDay;
+		}
 		return this.messageToDayModel.find().populate('messages').exec();
 	}
 
@@ -47,5 +60,13 @@ export class MessagesToDaysService {
 		}
 
 		return await messageToDay.save();
+	}
+
+	async messagesToDaysByUsers(userId: string) {
+		const user = await this.messageToDayModel.findOne({ userId }).exec();
+		if (!user) {
+			throw new NotFoundException(`userId ${userId} not found`);
+		}
+		return user;
 	}
 }

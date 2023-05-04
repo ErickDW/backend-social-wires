@@ -6,6 +6,7 @@ import {
 	Body,
 	Put,
 	Delete,
+	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -15,6 +16,7 @@ import {
 	UpdateMessageToDayDto,
 	AddToMessageToDayDto,
 } from '../dtos/messagesToDay.dto';
+import { FilterMessagesDto } from 'src/messages/dtos/messages.dtos';
 
 @ApiTags('messagesToDays')
 @Controller('messagesToDays')
@@ -22,8 +24,8 @@ export class MessagesToDayController {
 	constructor(private messagesToDaysService: MessagesToDaysService) {}
 
 	@Get()
-	findAll() {
-		return this.messagesToDaysService.findAll();
+	findAll(@Query() params: FilterMessagesDto) {
+		return this.messagesToDaysService.findAll(params);
 	}
 
 	@Get(':id')
@@ -34,7 +36,7 @@ export class MessagesToDayController {
 	@Post()
 	create(@Body() payload: CreateMessageToDayDto) {
 		const time = new Date();
-		payload.date = new Date(`${time.toISOString()}`);
+		payload.date = time.toISOString();
 		//console.log('oe', payload.date.toLocaleTimeString('en-US'));
 		return this.messagesToDaysService.create(payload);
 	}

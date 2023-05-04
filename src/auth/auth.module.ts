@@ -20,7 +20,7 @@ import config from '../config';
 			useFactory: (configService: ConfigType<typeof config>) => {
 				return {
 					secret: configService.jwtSecret,
-					signOptions: { expiresIn: '10d' },
+					signOptions: { expiresIn: '2d' },
 				};
 			},
 		}),

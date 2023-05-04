@@ -20,9 +20,8 @@ export class CreateMessageDto {
 
 	@IsString()
 	@IsOptional()
-	@IsDate()
 	@ApiProperty()
-	date: Date;
+	date: string;
 
 	@IsNotEmpty()
 	@IsString()
@@ -31,3 +30,16 @@ export class CreateMessageDto {
 }
 
 export class UpdateMessageDto extends PartialType(CreateMessageDto) {}
+
+export class FilterMessagesDto {
+	@IsOptional()
+	@IsString()
+	nick: number;
+
+	@IsOptional()
+	@IsString()
+	title: number;
+
+	@IsOptional()
+	day: string;
+}

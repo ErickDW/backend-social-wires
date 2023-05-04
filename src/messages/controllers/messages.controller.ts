@@ -11,13 +11,20 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
-import { CreateMessageDto, UpdateMessageDto } from '../dtos/messages.dtos';
+import {
+	CreateMessageDto,
+	FilterMessagesDto,
+	UpdateMessageDto,
+} from '../dtos/messages.dtos';
 import { MessagesService } from '../services/messages.service';
 import { MongoIdPipe } from 'src/common/mongo-id/mongo-id.pipe';
 import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-@UseGuards(JwtAuthGuard)
+import { Role } from 'src/auth/models/roles.model';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+@UseGuards(JwtAuthGuard, RolesGuard)
 @UseGuards(ApiKeyGuard)
 @ApiTags('messages')
 @Controller('messages')
@@ -27,12 +34,8 @@ export class MessagesController {
 	@Public()
 	@Get()
 	@ApiOperation({ summary: 'List of messages' })
-	getMessages(
-		@Query('limit') limit = 100,
-		@Query('offset') offset = 0,
-		@Query('brand') brand: string,
-	) {
-		return this.messagesService.findAll();
+	getMessages(@Query() params: FilterMessagesDto) {
+		return this.messagesService.findAll(params);
 	}
 
 	@Public()
@@ -47,10 +50,11 @@ export class MessagesController {
 		return this.messagesService.findOne(messageId);
 	}
 
+	@Roles(Role.ADMIN)
 	@Post()
 	create(@Body() payload: CreateMessageDto) {
 		const time = new Date();
-		payload.date = new Date(`${time.toISOString()}`);
+		payload.date = time.toISOString();
 		//console.log('oe', payload.date.toLocaleTimeString('en-US'));
 		return this.messagesService.create(payload); // 👈
 	}

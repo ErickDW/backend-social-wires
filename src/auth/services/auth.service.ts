@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from './../../users/services/users.service';
 import { User } from 'src/users/entities/user.entity';
 import { PayloadToken } from '../models/token.model';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -25,11 +26,20 @@ export class AuthService {
 		return null;
 	}
 
-	generateJWT(user: User) {
-		const payload: PayloadToken = { role: user.role, sub: user.id };
+	generateJWT(user: User, res: Response) {
+		const payload: PayloadToken = { role: user.role, nick: user.nickName };
+		const jwt = this.jwtService.sign(payload);
+		res.cookie('jwt', jwt, { httpOnly: true });
 		return {
-			access_token: this.jwtService.sign(payload),
-			user,
+			message: 'Succes',
 		};
+	}
+
+	async userJWT(cookie: string) {
+		const dat = await this.jwtService.verifyAsync(cookie);
+		if (!dat) {
+			throw new UnauthorizedException('not allow');
+		}
+		return dat;
 	}
 }

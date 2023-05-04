@@ -17,9 +17,8 @@ export class CreateMessageToDayDto {
 
 	@IsString()
 	@IsOptional()
-	@IsDate()
 	@ApiProperty()
-	date: Date;
+	date: string;
 
 	@IsArray()
 	@IsNotEmpty()
@@ -35,4 +34,9 @@ export class AddToMessageToDayDto {
 	@IsArray()
 	@IsNotEmpty()
 	readonly messgesIds: string[];
+}
+
+export class FilterMessagesToDayDto {
+	@IsOptional()
+	day: string;
 }

@@ -12,9 +12,8 @@ export class Message extends Document {
 	@Prop({ required: true, type: String })
 	message: string;
 
-	@Prop({ required: true, type: Date, index: true })
-	date: Date;
+	@Prop({ required: true, type: String, index: true })
+	date: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
-MessageSchema.index({ date: 1 });
