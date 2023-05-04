@@ -13,10 +13,10 @@ const API_KEY_PROD = 'PROD1212121SA';
 	imports: [
 		MongooseModule.forRootAsync({
 			useFactory: (configService: ConfigType<typeof config>) => {
-				const { connection, user, password, host, port, dbName } =
+				const { connection, user, password, host, dbName } =
 					configService.mongo;
 				return {
-					uri: `${connection}://${host}:${port}`,
+					uri: `${connection}://${host}`,
 					user,
 					pass: password,
 					dbName,
