@@ -18,7 +18,7 @@ import {
 } from '../dtos/messagesToDay.dto';
 import { FilterMessagesDto } from 'src/messages/dtos/messages.dtos';
 
-@ApiTags('messagesToDays')
+@ApiTags('MessagesToDays')
 @Controller('messagesToDays')
 export class MessagesToDayController {
 	constructor(private messagesToDaysService: MessagesToDaysService) {}

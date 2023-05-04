@@ -57,13 +57,16 @@ export class MessagesService {
 	}
 
 	update(id: string, changes: UpdateMessageDto) {
-		const message = this.messageModel
+		return this.messageModel
 			.findByIdAndUpdate(id, { $set: changes }, { new: true })
-			.exec();
-		if (!message) {
-			throw new NotFoundException(`Message #${id} not found`);
-		}
-		return { not: 'Message update', dat: message };
+			.exec()
+			.then((res) => {
+				if (!res) {
+					throw new NotFoundException(`Message #${id} not found`);
+				}
+
+				return { not: 'Message update', message: res.toJSON() };
+			});
 	}
 
 	remove(id: string) {

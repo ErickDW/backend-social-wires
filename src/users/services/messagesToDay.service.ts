@@ -33,7 +33,7 @@ export class MessagesToDaysService {
 	}
 
 	async findOne(id: string) {
-		return this.messageToDayModel.findById(id);
+		return this.messageToDayModel.findById(id).populate('messages');
 	}
 
 	create(data: CreateMessageToDayDto) {
@@ -62,10 +62,10 @@ export class MessagesToDaysService {
 		return await messageToDay.save();
 	}
 
-	async messagesToDaysByUsers(userId: string) {
-		const user = await this.messageToDayModel.findOne({ userId }).exec();
+	async messagesToDaysByUsers(nick: string) {
+		const user = await this.messageToDayModel.find({ nick }).exec();
 		if (!user) {
-			throw new NotFoundException(`userId ${userId} not found`);
+			throw new NotFoundException(`userId ${nick} not found`);
 		}
 		return user;
 	}

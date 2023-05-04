@@ -1,5 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { Db } from 'mongodb';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
@@ -9,22 +8,28 @@ import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService {
-	constructor(
-		@Inject('MONGO') private databaseMongo: Db,
-		@InjectModel(User.name) private userModel: Model<User>,
-	) {}
+	constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-	findAll() {
-		return this.userModel.find().exec();
+	async findAll() {
+		return await this.userModel
+			.find()
+			.exec()
+			.then((us: User[]) => {
+				const uts = new Array<any>();
+				us.forEach((item) => {
+					const { password, ...rta } = item.toJSON();
+					uts.push(rta);
+				});
+				return uts;
+			});
 	}
 
-	getTasks() {
-		const tasksCollection = this.databaseMongo.collection('tasks');
-		return tasksCollection.find().toArray();
-	}
-
-	async findOne(id: string) {
-		return this.userModel.findById(id);
+	async findOne(id: string): Promise<any> {
+		const { password, ...rta } = (await this.userModel.findById(id)).toJSON();
+		if (!rta) {
+			return 'Not found user';
+		}
+		return rta;
 	}
 
 	async getMessagesToDaysByUser(userId: string) {
@@ -32,7 +37,6 @@ export class UsersService {
 		return {
 			date: new Date(),
 			user,
-			// products: this.productsService.findAll(),
 			messages: [],
 		};
 	}
@@ -50,13 +54,28 @@ export class UsersService {
 		return this.userModel.findOne({ email }).exec();
 	}
 
-	update(id: string, changes: UpdateUserDto) {
+	async update(id: string, changes: UpdateUserDto): Promise<any> {
+		if (changes.password) {
+			const hashPassword = await bcrypt.hash(changes.password, 10);
+			changes.password = hashPassword;
+		}
 		return this.userModel
 			.findByIdAndUpdate(id, { $set: changes }, { new: true })
-			.exec();
+			.exec()
+			.then((us) => {
+				const { password, ...rta } = us.toJSON();
+				if (!rta) {
+					return 'Not found user';
+				}
+				return { ...rta, passwordChage: true };
+			});
 	}
 
 	remove(id: string) {
-		return this.userModel.findByIdAndDelete(id);
+		const userDelete = this.userModel.findByIdAndDelete(id);
+		if (!userDelete) {
+			return 'Not found user';
+		}
+		return userDelete;
 	}
 }

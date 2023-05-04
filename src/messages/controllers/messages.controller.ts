@@ -9,7 +9,13 @@ import {
 	Delete,
 	UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+	ApiTags,
+	ApiOperation,
+	ApiResponse,
+	ApiBearerAuth,
+	ApiHeader,
+} from '@nestjs/swagger';
 
 import {
 	CreateMessageDto,
@@ -21,37 +27,52 @@ import { MongoIdPipe } from 'src/common/mongo-id/mongo-id.pipe';
 import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Role } from 'src/auth/models/roles.model';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-@UseGuards(JwtAuthGuard, RolesGuard)
-@UseGuards(ApiKeyGuard)
-@ApiTags('messages')
+@UseGuards(JwtAuthGuard, ApiKeyGuard)
+@ApiTags('Messages')
 @Controller('messages')
 export class MessagesController {
 	constructor(private messagesService: MessagesService) {}
 
 	@Public()
 	@Get()
-	@ApiOperation({ summary: 'List of messages' })
+	@ApiOperation({
+		summary: 'Get all messages or get all messages per fillters',
+		description: 'Return array messages',
+	})
+	@ApiResponse({
+		type: [CreateMessageDto],
+	})
 	getMessages(@Query() params: FilterMessagesDto) {
 		return this.messagesService.findAll(params);
 	}
 
 	@Public()
-	@Get('filter')
-	getMessageFilter() {
-		return `yo soy un filter x`;
-	}
-
-	@Public()
 	@Get(':messageId')
+	@ApiOperation({
+		summary: 'Get message per message ID',
+		description: 'Return message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
 	getOne(@Param('messageId', MongoIdPipe) messageId: string) {
 		return this.messagesService.findOne(messageId);
 	}
 
-	@Roles(Role.ADMIN)
 	@Post()
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Create message',
+		description: 'Create new message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
 	create(@Body() payload: CreateMessageDto) {
 		const time = new Date();
 		payload.date = time.toISOString();
@@ -60,6 +81,16 @@ export class MessagesController {
 	}
 
 	@Put(':id')
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Update message',
+		description: 'Update message',
+	})
 	update(
 		@Param('id', MongoIdPipe) id: string,
 		@Body() payload: UpdateMessageDto,
@@ -68,6 +99,19 @@ export class MessagesController {
 	}
 
 	@Delete(':id')
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Delete message',
+		description: 'Delete message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
 	delete(@Param('id', MongoIdPipe) id: string) {
 		return this.messagesService.remove(id); // 👈
 	}

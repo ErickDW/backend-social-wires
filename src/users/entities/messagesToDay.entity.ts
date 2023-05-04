@@ -13,6 +13,9 @@ export class MessagesToDay extends Document {
 	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
 	userId: User | Types.ObjectId;
 
+	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
+	nick: User | Types.ObjectId;
+
 	@Prop({ type: [{ type: Types.ObjectId, ref: Message.name }] })
 	messages: Types.Array<Message>;
 }

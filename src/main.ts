@@ -21,7 +21,7 @@ async function bootstrap() {
 
 	const config = new DocumentBuilder()
 		.setTitle('API SOCIAL WIRES')
-		.setDescription('SOCIAL WIRES')
+		.setDescription('SOCIAL WIRES is a development backend for testing')
 		.setVersion('1.0')
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
