@@ -1,71 +1,81 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
-import { MessagesService } from 'src/messages/services/messages.service';
-
 @Injectable()
 export class UsersService {
-	constructor(
-		private messagesService: MessagesService,
-		private configService: ConfigService,
-	) {}
+	constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-	private counterId = 1;
-	private users: User[] = [
-		{
-			id: 1,
-			email: 'correo@mail.com',
-			password: '12345',
-			role: 'admin',
-			userName: 'Paco',
-			nickName: 'Paquito',
-		},
-	];
-
-	findAll() {
-		const apiKey = this.configService.get('API_KEY');
-		const dbName = this.configService.get('DATABASE_NAME');
-		console.log(apiKey, dbName);
-		return this.users;
+	async findAll() {
+		return await this.userModel
+			.find()
+			.exec()
+			.then((us: User[]) => {
+				const uts = new Array<any>();
+				us.forEach((item) => {
+					const { password, ...rta } = item.toJSON();
+					uts.push(rta);
+				});
+				return uts;
+			});
 	}
 
-	findOne(id: number) {
-		const user = this.users.find((item) => item.id === id);
-		if (!user) {
-			throw new NotFoundException(`User #${id} not found`);
+	async findOne(id: string): Promise<any> {
+		const { password, ...rta } = (await this.userModel.findById(id)).toJSON();
+		if (!rta) {
+			return 'Not found user';
 		}
-		return user;
+		return rta;
 	}
 
-	create(data: CreateUserDto) {
-		this.counterId = this.counterId + 1;
-		const newUser = {
-			id: this.counterId,
-			...data,
+	async getMessagesToDaysByUser(userId: string) {
+		const user = await this.findOne(userId);
+		return {
+			date: new Date(),
+			user,
+			messages: [],
 		};
-		this.users.push(newUser);
-		return newUser;
 	}
 
-	update(id: number, changes: UpdateUserDto) {
-		const user = this.findOne(id);
-		const index = this.users.findIndex((item) => item.id === id);
-		this.users[index] = {
-			...user,
-			...changes,
-		};
-		return this.users[index];
+	async create(data: CreateUserDto): Promise<any> {
+		const newModel = new this.userModel(data);
+		const hashPassword = await bcrypt.hash(newModel.password, 10);
+		newModel.password = hashPassword;
+		const model = await newModel.save();
+		const { password, ...rta } = model.toJSON();
+		return rta;
 	}
 
-	remove(id: number) {
-		const index = this.users.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new NotFoundException(`User #${id} not found`);
+	findByEmail(email: string) {
+		return this.userModel.findOne({ email }).exec();
+	}
+
+	async update(id: string, changes: UpdateUserDto): Promise<any> {
+		if (changes.password) {
+			const hashPassword = await bcrypt.hash(changes.password, 10);
+			changes.password = hashPassword;
 		}
-		this.users.splice(index, 1);
-		return true;
+		return this.userModel
+			.findByIdAndUpdate(id, { $set: changes }, { new: true })
+			.exec()
+			.then((us) => {
+				const { password, ...rta } = us.toJSON();
+				if (!rta) {
+					return 'Not found user';
+				}
+				return { ...rta, passwordChage: true };
+			});
+	}
+
+	remove(id: string) {
+		const userDelete = this.userModel.findByIdAndDelete(id);
+		if (!userDelete) {
+			return 'Not found user';
+		}
+		return userDelete;
 	}
 }

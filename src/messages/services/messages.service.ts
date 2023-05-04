@@ -1,59 +1,75 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { FilterQuery, Model } from 'mongoose';
 
 import { Message } from './../entities/message.entity';
-import { CreateMessageDto, UpdateMessageDto } from './../dtos/messages.dtos';
+import {
+	CreateMessageDto,
+	FilterMessagesDto,
+	UpdateMessageDto,
+} from './../dtos/messages.dtos';
 
 @Injectable()
 export class MessagesService {
-	private counterId = 1;
-	private messages: Message[] = [
-		{
-			id: 1,
-			userId: 1000,
-			title: 'Titulo del mensaje',
-			message: 'lorem lorem',
-			date: new Date(),
-		},
-	];
-
-	findAll() {
-		return this.messages;
+	constructor(
+		@InjectModel(Message.name) private messageModel: Model<Message>,
+	) {}
+	async findAll(params?: FilterMessagesDto) {
+		if (params) {
+			const filters: FilterQuery<Message> = {};
+			const { nick, title, day } = params;
+			if (nick) {
+				filters.nick = { $regex: nick, $options: 'i' };
+			}
+			if (title) {
+				filters.title = { $regex: title, $options: 'i' };
+			}
+			if (day) {
+				filters.date = { $regex: day };
+			}
+			const messages = await this.messageModel.find(filters).exec();
+			return messages;
+		}
+		return this.messageModel.find().exec();
 	}
 
-	findOne(id: number) {
-		const message = this.messages.find((item) => item.id === id);
+	async findNick(nick: string) {
+		const messages = await this.messageModel
+			.find({ nick: { $regex: nick } })
+			.exec();
+		return messages.sort((a, b) => {
+			return a.nick.toLowerCase().length - b.nick.toLowerCase().length;
+		});
+	}
+
+	async findOne(id: string) {
+		const message = await this.messageModel.findById(id).exec();
 		if (!message) {
 			throw new NotFoundException(`Message #${id} not found`);
 		}
 		return message;
 	}
 
-	create(data: CreateMessageDto) {
-		this.counterId = this.counterId + 1;
-		const newMessage = {
-			id: this.counterId,
-			...data,
-		};
-		this.messages.push(newMessage);
-		return newMessage;
+	async create(data: CreateMessageDto) {
+		const newMessge = new this.messageModel(data);
+		const msg = await newMessge.save();
+		return { not: 'Message create', dat: msg.toJSON() };
 	}
 
-	update(id: number, changes: UpdateMessageDto) {
-		const message = this.findOne(id);
-		const index = this.messages.findIndex((item) => item.id === id);
-		this.messages[index] = {
-			...message,
-			...changes,
-		};
-		return this.messages[index];
+	update(id: string, changes: UpdateMessageDto) {
+		return this.messageModel
+			.findByIdAndUpdate(id, { $set: changes }, { new: true })
+			.exec()
+			.then((res) => {
+				if (!res) {
+					throw new NotFoundException(`Message #${id} not found`);
+				}
+
+				return { not: 'Message update', message: res.toJSON() };
+			});
 	}
 
-	remove(id: number) {
-		const index = this.messages.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new NotFoundException(`Message #${id} not found`);
-		}
-		this.messages.splice(index, 1);
-		return true;
+	remove(id: string) {
+		return this.messageModel.findByIdAndDelete(id);
 	}
 }

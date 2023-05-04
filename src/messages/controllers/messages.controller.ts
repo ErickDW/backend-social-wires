@@ -7,63 +7,112 @@ import {
 	Body,
 	Put,
 	Delete,
-	HttpStatus,
-	HttpCode,
+	UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+	ApiTags,
+	ApiOperation,
+	ApiResponse,
+	ApiBearerAuth,
+	ApiHeader,
+} from '@nestjs/swagger';
 
-import { ParseIntPipe } from '../../common/parse-int.pipe';
-import { CreateMessageDto, UpdateMessageDto } from '../dtos/messages.dtos';
+import {
+	CreateMessageDto,
+	FilterMessagesDto,
+	UpdateMessageDto,
+} from '../dtos/messages.dtos';
 import { MessagesService } from '../services/messages.service';
-
-@ApiTags('messages')
+import { MongoIdPipe } from 'src/common/mongo-id/mongo-id.pipe';
+import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+@UseGuards(JwtAuthGuard, ApiKeyGuard)
+@ApiTags('Messages')
 @Controller('messages')
 export class MessagesController {
 	constructor(private messagesService: MessagesService) {}
 
+	@Public()
 	@Get()
-	@ApiOperation({ summary: 'List of messages' })
-	getMessages(
-		@Query('limit') limit = 100,
-		@Query('offset') offset = 0,
-		@Query('brand') brand: string,
-	) {
-		// return {
-		//   message: `messages limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
-		// };
-		return this.messagesService.findAll();
+	@ApiOperation({
+		summary: 'Get all messages or get all messages per fillters',
+		description: 'Return array messages',
+	})
+	@ApiResponse({
+		type: [CreateMessageDto],
+	})
+	getMessages(@Query() params: FilterMessagesDto) {
+		return this.messagesService.findAll(params);
 	}
 
-	@Get('filter')
-	getMessageFilter() {
-		return `yo soy un filter`;
-	}
-
+	@Public()
 	@Get(':messageId')
-	@HttpCode(HttpStatus.ACCEPTED)
-	getOne(@Param('messageId', ParseIntPipe) messageId: number) {
-		// response.status(200).send({
-		//   message: `message ${messageId}`,
-		// });
+	@ApiOperation({
+		summary: 'Get message per message ID',
+		description: 'Return message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
+	getOne(@Param('messageId', MongoIdPipe) messageId: string) {
 		return this.messagesService.findOne(messageId);
 	}
 
 	@Post()
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Create message',
+		description: 'Create new message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
 	create(@Body() payload: CreateMessageDto) {
-		// return {
-		//   message: 'accion de crear',
-		//   payload,
-		// };
-		return this.messagesService.create(payload);
+		const time = new Date();
+		payload.date = time.toISOString();
+		//console.log('oe', payload.date.toLocaleTimeString('en-US'));
+		return this.messagesService.create(payload); // 👈
 	}
 
 	@Put(':id')
-	update(@Param('id') id: string, @Body() payload: UpdateMessageDto) {
-		return this.messagesService.update(+id, payload);
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Update message',
+		description: 'Update message',
+	})
+	update(
+		@Param('id', MongoIdPipe) id: string,
+		@Body() payload: UpdateMessageDto,
+	) {
+		return this.messagesService.update(id, payload); // 👈
 	}
 
 	@Delete(':id')
-	delete(@Param('id') id: string) {
-		return this.messagesService.remove(+id);
+	@ApiBearerAuth()
+	@ApiHeader({
+		name: 'Auth',
+		example: 'ABC123',
+		description: 'in local or dev is ABC123',
+	})
+	@ApiOperation({
+		summary: 'Delete message',
+		description: 'Delete message',
+	})
+	@ApiResponse({
+		type: CreateMessageDto,
+	})
+	delete(@Param('id', MongoIdPipe) id: string) {
+		return this.messagesService.remove(id); // 👈
 	}
 }
