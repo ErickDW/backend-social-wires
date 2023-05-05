@@ -27,6 +27,7 @@ import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
 import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
 import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+
 @UseGuards(JwtAuthGuard, ApiKeyGuard)
 @ApiTags('Messages')
 @Controller('messages')

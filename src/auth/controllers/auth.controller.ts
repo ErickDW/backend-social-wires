@@ -8,7 +8,7 @@ import {
 	UseGuards,
 } from '@nestjs/common';
 
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -58,7 +58,7 @@ export class AuthController {
 		description: 'Return succes logout user',
 	})
 	async logout(@Res({ passthrough: true }) response: FastifyReply) {
-		response.setCookie('jwt', '');
+		response.cookie('jwt', '', { httpOnly: true, path: '/' });
 		return {
 			message: 'Succes',
 		};

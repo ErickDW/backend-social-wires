@@ -10,14 +10,6 @@ import {
 } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-	// const cookie = cookieParser();
-	// const app = await NestFactory.create(AppModule);
-	// app.use(cookie);
-	// app.enableCors({
-	// 	origin: 'http://localhost:3000',
-	// 	credentials: true,
-	// });
-
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
