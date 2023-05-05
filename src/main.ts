@@ -2,16 +2,29 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+// import * as cookieParser from 'cookie-parser';
+import fastifyCookie from '@fastify/cookie';
+import {
+	FastifyAdapter,
+	NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-	const cookie = cookieParser();
-	const app = await NestFactory.create(AppModule);
-	app.use(cookie);
+	// const cookie = cookieParser();
+	// const app = await NestFactory.create(AppModule);
+	// app.use(cookie);
 	// app.enableCors({
 	// 	origin: 'http://localhost:3000',
 	// 	credentials: true,
 	// });
+
+	const app = await NestFactory.create<NestFastifyApplication>(
+		AppModule,
+		new FastifyAdapter(),
+	);
+	await app.register(fastifyCookie, {
+		secret: 'my-secret', // for cookies signature
+	});
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -29,6 +42,6 @@ async function bootstrap() {
 	SwaggerModule.setup('docs', app, document);
 
 	app.enableCors();
-	await app.listen(process.env.PORT || 3000);
+	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();

@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../../users/entities/user.entity';
 import { ApiKeyGuard } from '../guards/api-key.guard';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { FastifyReply } from 'fastify';
 @ApiTags('Auth')
 @UseGuards(ApiKeyGuard)
 @Controller('auth')
@@ -28,7 +29,10 @@ export class AuthController {
 		summary: 'Login',
 		description: 'User login',
 	})
-	login(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
+	login(
+		@Req() req: Request,
+		@Res({ passthrough: true }) response: FastifyReply,
+	) {
 		const user = req.user as User;
 		return this.authService.generateJWT(user, response);
 	}
@@ -53,8 +57,8 @@ export class AuthController {
 		summary: 'Logout',
 		description: 'Return succes logout user',
 	})
-	async logout(@Res({ passthrough: true }) response: Response) {
-		response.clearCookie('jwt');
+	async logout(@Res({ passthrough: true }) response: FastifyReply) {
+		response.setCookie('jwt', '');
 		return {
 			message: 'Succes',
 		};

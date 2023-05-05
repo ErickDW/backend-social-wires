@@ -76,7 +76,6 @@ export class MessagesController {
 	create(@Body() payload: CreateMessageDto) {
 		const time = new Date();
 		payload.date = time.toISOString();
-		//console.log('oe', payload.date.toLocaleTimeString('en-US'));
 		return this.messagesService.create(payload); // 👈
 	}
 
