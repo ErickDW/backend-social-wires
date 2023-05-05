@@ -7,9 +7,8 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { Role } from '../../auth/models/roles.model';
-import { PayloadToken } from 'src/auth/models/token.model';
+import { PayloadToken } from '../../auth/models/token.model';
 import { MessagesToDaysService } from '../services/messagesToDay.service';
-import { CreateUserDto } from '../dtos/user.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('Profile')

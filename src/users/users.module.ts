@@ -11,7 +11,7 @@ import {
 	MessagesToDaySchema,
 } from './entities/messagesToDay.entity';
 
-import { MessageModule } from 'src/messages/messages.module';
+import { MessageModule } from '../messages/messages.module';
 import { ProfileController } from './controllers/profile.controller';
 
 @Module({

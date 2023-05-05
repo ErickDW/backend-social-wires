@@ -23,10 +23,10 @@ import {
 	UpdateMessageDto,
 } from '../dtos/messages.dtos';
 import { MessagesService } from '../services/messages.service';
-import { MongoIdPipe } from 'src/common/mongo-id/mongo-id.pipe';
-import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
-import { Public } from 'src/auth/decorators/public.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
+import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
+import { Public } from '../../auth/decorators/public.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard, ApiKeyGuard)
 @ApiTags('Messages')
 @Controller('messages')

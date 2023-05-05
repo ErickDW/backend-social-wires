@@ -13,8 +13,8 @@ import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { CreateMessageToDayDto } from '../dtos/messagesToDay.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
 
 @UseGuards(ApiKeyGuard)
 @ApiHeader({
