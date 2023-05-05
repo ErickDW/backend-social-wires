@@ -16,7 +16,7 @@ import {
 	UpdateMessageToDayDto,
 	AddToMessageToDayDto,
 } from '../dtos/messagesToDay.dto';
-import { FilterMessagesDto } from 'src/messages/dtos/messages.dtos';
+import { FilterMessagesDto } from '../../messages/dtos/messages.dtos';
 
 @ApiTags('MessagesToDays')
 @Controller('messagesToDays')

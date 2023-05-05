@@ -7,7 +7,7 @@ import {
 	IsString
 } from 'class-validator';
 import { OmitType, PartialType, ApiProperty } from '@nestjs/swagger';
-import { CreateMessageDto } from 'src/messages/dtos/messages.dtos';
+import { CreateMessageDto } from '../../messages/dtos/messages.dtos';
 
 export class CreateMessageToDayDto {
 	@IsNotEmpty()

@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsEmail, Length } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/auth/models/roles.model';
+import { Role } from '../../auth/models/roles.model';
 
 export class CreateUserDto {
 	@IsString()
