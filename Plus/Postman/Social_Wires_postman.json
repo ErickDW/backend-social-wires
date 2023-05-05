@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "b5674d94-fb72-4279-ba3d-ac87d538caa0",
+		"name": "Social Wires",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/messages/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"messages",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nick\": \"pataconcito\",\r\n  \"title\": \"Primer menh\",\r\n  \"message\": \"P\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update_Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\":\"PAQUIs paf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/messages/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"messages",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/messages/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"messages",
+								"id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Procfile",
+					"item": [
+						{
+							"name": "Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/profile/my-MessagesToDays",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"profile",
+										"my-MessagesToDays"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "MessagesToDays",
+					"item": [
+						{
+							"name": "MessagesToDays",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Auth",
+										"value": "ABC123",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/messagesToDays",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"messagesToDays"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MessagesToDay",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Auth",
+										"value": "ABC123",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/messagesToDays/id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"messagesToDays",
+										"id"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create_MessageToDay",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Auth",
+										"value": "ABC123",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"userId\": 45445454545,\r\n  \"title\": \"Primer mensajdfsdfe\",\r\n  \"message\": \"Pfggffff\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/messagesToDays",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"messagesToDays"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update_MessageToDay",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Auth",
+										"value": "ABC123",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"message\":\"PAQUIs paf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/messagesToDays/id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"messagesToDays",
+										"id"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete_MessageToDay",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Auth",
+										"value": "ABC123",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/messagesToDays/id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"messagesToDays",
+										"id"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"patacon@gmail.com\",\r\n\t\"password\": \"contraset\",\r\n\t\"role\": \"admin\",\r\n\t\"userName\": \"Alice\",\r\n\t\"nickName\": \"pataconcito\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update_User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\":\"PAQUIs paf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"patacon@gmail.com\",\r\n\t\"password\": \"contraset\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/auth/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuaWNrIjoicGF0YWNvbmNpdG8iLCJpYXQiOjE2ODMxNDgzMjUsImV4cCI6MTY4MzMyMTEyNX0.XLi1in0HuQPv58956zS15JQ2UB1DUoX77Hn6xWYXvcA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "ABC123",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

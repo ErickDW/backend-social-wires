@@ -1,4 +1,4 @@
-<p align="center">The Social Wires Backend</p>
+<h1 align="center">The Social Wires Backend</h1>
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
@@ -121,7 +121,7 @@ $ docker-compose down
 
 perfect now for convenience to be able to connect to the database we can use Mongo Compass and thus have a UI to manage it if you do not have it installed look for it in [MongoDB Compass Download (GUI)](https://www.mongodb.com/try/download/compass).
 
-#------------
+--------------------------
 
 Ready we have finished now we only have to execute the run command and we would have our back running locally.
 
@@ -136,6 +136,8 @@ $ npm run start:dev
 - In the plus folder you will find the envaromends files, a postman document and an insomnia document with the get, post, put and delete of the project.
 
 - The project has a frontend section made with the Angular framework and you can see its repository here [Frontend Social Wires](https://github.com/ErickDW/frontend-social-wires)
+
+-This backend project is deployed with [Vercel](https://vercel.com) in [Back host Social Wires](https://backend-social-wires.vercel.app) exposed for testing.
 
 ## Author
 -  Kenpo Erickson Cataño Gil - [Kenpo](https://kenpo-v.web.app/)
