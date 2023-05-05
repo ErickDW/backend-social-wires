@@ -27,6 +27,7 @@ import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
 import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
 import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+
 @UseGuards(JwtAuthGuard, ApiKeyGuard)
 @ApiTags('Messages')
 @Controller('messages')
@@ -76,7 +77,6 @@ export class MessagesController {
 	create(@Body() payload: CreateMessageDto) {
 		const time = new Date();
 		payload.date = time.toISOString();
-		//console.log('oe', payload.date.toLocaleTimeString('en-US'));
 		return this.messagesService.create(payload); // 👈
 	}
 

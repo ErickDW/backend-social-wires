@@ -2,15 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+// import * as cookieParser from 'cookie-parser';
+import fastifyCookie from '@fastify/cookie';
+import {
+	FastifyAdapter,
+	NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
-	app.use(cookieParser());
-	// app.enableCors({
-	// 	origin: 'http://localhost:3000',
-	// 	credentials: true,
-	// });
+	const app = await NestFactory.create<NestFastifyApplication>(
+		AppModule,
+		new FastifyAdapter(),
+	);
+	await app.register(fastifyCookie, {
+		secret: 'my-secret', // for cookies signature
+	});
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -25,9 +31,16 @@ async function bootstrap() {
 		.setVersion('1.0')
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('docs', app, document);
+	SwaggerModule.setup('docs', app, document, {
+		customCssUrl:
+			'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+		customJs: [
+			'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+			'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js',
+		],
+	});
 
 	app.enableCors();
-	await app.listen(process.env.PORT || 3000);
+	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();

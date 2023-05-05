@@ -14,6 +14,7 @@ import config from './../../config';
 import { IS_PUBLIC_KEY } from './../decorators/public.decorator';
 
 import { Request } from 'express';
+import { FastifyReply, FastifyRequest, FastifyContext, RequestPayload } from 'fastify';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -29,8 +30,8 @@ export class ApiKeyGuard implements CanActivate {
 		if (isPublic) {
 			return true;
 		}
-		const request = context.switchToHttp().getRequest<Request>();
-		const authHeader = request.header('Auth');
+		const request = context.switchToHttp().getRequest<FastifyRequest>();
+		const authHeader = request.headers.auth;
 		const isAuth = authHeader === this.configService.apiKey;
 		if (!isAuth) {
 			throw new UnauthorizedException('not allow');

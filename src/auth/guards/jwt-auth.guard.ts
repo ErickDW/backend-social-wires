@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { FastifyRequest } from 'fastify';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -20,7 +20,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 		if (isPublic) {
 			return true;
 		}
-		const request: Request = context.switchToHttp().getRequest();
+		const request: FastifyRequest = context.switchToHttp().getRequest();
 		const cookie = request.cookies['jwt'];
 		if (!cookie) {
 			throw new UnauthorizedException('not allow');

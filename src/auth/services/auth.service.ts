@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './../../users/services/users.service';
 import { User } from '../../users/entities/user.entity';
 import { PayloadToken } from '../models/token.model';
-import { Response } from 'express';
+import { FastifyReply } from 'fastify';
 
 @Injectable()
 export class AuthService {
@@ -26,17 +26,18 @@ export class AuthService {
 		return null;
 	}
 
-	generateJWT(user: User, res: Response) {
+	generateJWT(user: User, res: FastifyReply) {
 		const payload: PayloadToken = { role: user.role, nick: user.nickName };
 		const jwt = this.jwtService.sign(payload);
-		res.cookie('jwt', jwt, { httpOnly: true });
+		res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
+		res.signCookie(jwt);
 		return {
 			message: 'Succes',
 		};
 	}
 
 	async userJWT(cookie: string) {
-		const dat = await this.jwtService.verifyAsync(cookie);
+		const dat: PayloadToken = await this.jwtService.verifyAsync(cookie);
 		if (!dat) {
 			throw new UnauthorizedException('not allow');
 		}
