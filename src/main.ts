@@ -7,10 +7,13 @@ import {
 	FastifyAdapter,
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import * as cors from 'cors';
+// import cors from 'cors';
 
 async function bootstrap() {
-
+	function cors() {
+		return require('cors');
+	}
+	const d = cors();
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
@@ -47,7 +50,7 @@ async function bootstrap() {
 	});
 
 	app.use(
-		cors({
+		d({
 			origin: '*',
 			methods: ['POST', 'PUT', 'DELETE', 'GET'],
 			credentials: true,
