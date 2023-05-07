@@ -2,12 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-// import * as cookieParser from 'cookie-parser';
 import fastifyCookie from '@fastify/cookie';
 import {
 	FastifyAdapter,
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import * as cors from 'cors';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestFastifyApplication>(
@@ -45,6 +45,13 @@ async function bootstrap() {
 		methods: ['POST', 'PUT', 'DELETE', 'GET'],
 	});
 
+	app.use(
+		cors({
+			origin: '*',
+			methods: ['POST', 'PUT', 'DELETE', 'GET'],
+			credentials: true,
+		}),
+	);
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();
