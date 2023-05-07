@@ -30,7 +30,7 @@ import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
 import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { FastifyReply } from 'fastify';
-
+import { Request } from 'express';
 @UseGuards(JwtAuthGuard, ApiKeyGuard)
 @ApiTags('Messages')
 @Controller('messages')

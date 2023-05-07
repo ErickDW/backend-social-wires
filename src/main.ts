@@ -51,7 +51,7 @@ async function bootstrap() {
 			'http://localhost:4200',
 			'http://localhost:4200/signin',
 		],
-		methods: ['POST', 'PUT', 'DELETE', 'GET'],
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	});
 
 	app.use(
@@ -62,7 +62,7 @@ async function bootstrap() {
 				'http://localhost:4200',
 				'http://localhost:4200/signin',
 			],
-			methods: ['POST', 'PUT', 'DELETE', 'GET'],
+			methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		}),
 	);
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
