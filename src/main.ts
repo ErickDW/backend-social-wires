@@ -45,13 +45,13 @@ async function bootstrap() {
 	});
 
 	app.enableCors({
-		origin: '*',
+		origin: 'http://localhost:4200',
 		methods: ['POST', 'PUT', 'DELETE', 'GET'],
 	});
 
 	app.use(
 		d({
-			origin: '*',
+			origin: 'http://localhost:4200',
 			methods: ['POST', 'PUT', 'DELETE', 'GET'],
 			credentials: true,
 		}),
