@@ -45,15 +45,24 @@ async function bootstrap() {
 	});
 
 	app.enableCors({
-		origin: '*',
+		origin: [
+			'*',
+			'https://www.google.com',
+			'http://localhost:4200',
+			'http://localhost:4200/signin',
+		],
 		methods: ['POST', 'PUT', 'DELETE', 'GET'],
 	});
 
 	app.use(
 		d({
-			origin: '*',
+			origin: [
+				'*',
+				'https://www.google.com',
+				'http://localhost:4200',
+				'http://localhost:4200/signin',
+			],
 			methods: ['POST', 'PUT', 'DELETE', 'GET'],
-			credentials: true,
 		}),
 	);
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
