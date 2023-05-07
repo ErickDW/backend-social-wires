@@ -13,6 +13,7 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
+		{ cors: true },
 	);
 	await app.register(fastifyCookie, {
 		secret: 'my-secret', // for cookies signature
@@ -40,7 +41,11 @@ async function bootstrap() {
 		],
 	});
 
-	app.enableCors();
+	app.enableCors({
+		origin: '*',
+		methods: ['POST', 'PUT', 'DELETE', 'GET'],
+	});
+
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();

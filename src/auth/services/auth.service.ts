@@ -33,6 +33,7 @@ export class AuthService {
 		res.signCookie(jwt);
 		return {
 			message: 'Succes',
+			jwt: jwt,
 		};
 	}
 
