@@ -40,7 +40,10 @@ async function bootstrap() {
 		],
 	});
 
-	app.enableCors();
+	app.enableCors({
+		origin: '*',
+		methods: ['POST', 'PUT', 'DELETE', 'GET'],
+	});
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();
