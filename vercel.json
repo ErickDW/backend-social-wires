@@ -8,7 +8,7 @@
 	],
 	"headers": [
 		{
-			"source": "/https://social-wires-44y80lg3q-erickdw.vercel.app/(.*)",
+			"source": "/social-wires-44y80lg3q-erickdw.vercel.app/(.*)",
 			"headers": [
 				{ "key": "Access-Control-Allow-Credentials", "value": "true" },
 				{ "key": "Access-Control-Allow-Origin", "value": "*" },
