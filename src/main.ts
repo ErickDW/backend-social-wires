@@ -10,6 +10,7 @@ import {
 import * as cors from 'cors';
 
 async function bootstrap() {
+
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
