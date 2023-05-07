@@ -10,10 +10,8 @@ import {
 // import cors from 'cors';
 
 async function bootstrap() {
-	function cors() {
-		return require('cors');
-	}
-	const d = cors();
+	const t = require('cors');
+
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
@@ -55,7 +53,7 @@ async function bootstrap() {
 	});
 
 	app.use(
-		d({
+		t({
 			origin: [
 				'*',
 				'https://www.google.com',
