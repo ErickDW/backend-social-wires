@@ -9,9 +9,10 @@ import { AuthController } from './controllers/auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.srategy';
 import config from '../config';
+import { AllowCors } from './services/cors';
 
 @Module({
-	providers: [AuthService, LocalStrategy, JwtStrategy],
+	providers: [AuthService, LocalStrategy, JwtStrategy, AllowCors],
 	imports: [
 		UsersModule,
 		PassportModule,

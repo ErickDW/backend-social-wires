@@ -2,18 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-// import * as cookieParser from 'cookie-parser';
 import fastifyCookie from '@fastify/cookie';
 import {
 	FastifyAdapter,
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+// import cors from 'cors';
 
 async function bootstrap() {
+	function cors() {
+		return require('cors');
+	}
+	const d = cors();
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
-		{ cors: true },
 	);
 	await app.register(fastifyCookie, {
 		secret: 'my-secret', // for cookies signature
@@ -42,10 +45,26 @@ async function bootstrap() {
 	});
 
 	app.enableCors({
-		origin: '*',
-		methods: ['POST', 'PUT', 'DELETE', 'GET'],
+		origin: [
+			'*',
+			'https://www.google.com',
+			'http://localhost:4200',
+			'http://localhost:4200/signin',
+		],
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	});
 
+	app.use(
+		d({
+			origin: [
+				'*',
+				'https://www.google.com',
+				'http://localhost:4200',
+				'http://localhost:4200/signin',
+			],
+			methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		}),
+	);
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();
