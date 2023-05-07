@@ -33,6 +33,16 @@ export class AuthController {
 		@Req() req: Request,
 		@Res({ passthrough: true }) response: FastifyReply,
 	) {
+		console.log('req: ', req.headers);
+		console.log('response: ', response.getHeaders());
+
+		response.header('access-control-allow-origin', '*');
+		response.header('access-control-allow-credentials', true);
+
+		console.log('req: ', req.headers);
+		console.log('response: ', response.getHeaders());
+		// response.header('access-control-allow-origin', '*');
+
 		const user = req.user as User;
 		return this.authService.generateJWT(user, response);
 	}
