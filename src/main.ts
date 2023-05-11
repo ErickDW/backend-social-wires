@@ -41,7 +41,7 @@ async function bootstrap() {
 
 	//* Change line 44 => origin: ['http://localhost:4200'],
 	app.enableCors({
-		origin: ['https://social-wires.web.app', 'http://localhost:4200'],
+		origin: ['https://social-wires.web.app'],
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'],
 		credentials: true,
 	});
