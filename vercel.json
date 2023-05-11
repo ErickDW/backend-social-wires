@@ -11,8 +11,7 @@
 			"src": "/(.*)",
 			"dest": "src/main.ts",
 			"headers": {
-				"Access-Control-Allow-Origin": "https://social-wires.web.app",
-				"Access-Control-Allow-Credentials": true
+				"Access-Control-Allow-Origin": "https://social-wires.web.app"
 			},
 			"methods": [
 				"GET",
