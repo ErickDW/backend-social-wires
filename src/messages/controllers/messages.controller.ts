@@ -8,8 +8,6 @@ import {
 	Put,
 	Delete,
 	UseGuards,
-	Req,
-	Res,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -29,8 +27,6 @@ import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
 import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
 import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { FastifyReply } from 'fastify';
-import { Request } from 'express';
 @UseGuards(JwtAuthGuard, ApiKeyGuard)
 @ApiTags('Messages')
 @Controller('messages')
@@ -46,19 +42,7 @@ export class MessagesController {
 	@ApiResponse({
 		type: [CreateMessageDto],
 	})
-	getMessages(
-		@Query() params: FilterMessagesDto,
-		@Req() req: Request,
-		@Res({ passthrough: true }) response: FastifyReply,
-	) {
-		console.log('req1: ', req.headers);
-		console.log('response1: ', response.getHeaders());
-
-		response.header('access-control-allow-origin', '*');
-		response.header('access-control-allow-credentials', true);
-
-		console.log('req2: ', req.headers);
-		console.log('response2: ', response.getHeaders());
+	getMessages(@Query() params: FilterMessagesDto) {
 		return this.messagesService.findAll(params);
 	}
 

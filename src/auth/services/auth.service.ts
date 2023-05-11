@@ -40,7 +40,7 @@ export class AuthService {
 	async userJWT(cookie: string) {
 		const dat: PayloadToken = await this.jwtService.verifyAsync(cookie);
 		if (!dat) {
-			throw new UnauthorizedException('not allow');
+			throw new UnauthorizedException('not allow code 0002');
 		}
 		return dat;
 	}
