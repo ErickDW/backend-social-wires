@@ -122,6 +122,10 @@ $ docker-compose down
 perfect now for convenience to be able to connect to the database we can use Mongo Compass and thus have a UI to manage it if you do not have it installed look for it in [MongoDB Compass Download (GUI)](https://www.mongodb.com/try/download/compass).
 
 --------------------------
+Change line 44 in main.ts 
+```bash
+$ origin: ['http://localhost:4200'],
+```
 
 Ready we have finished now we only have to execute the run command and we would have our back running locally.
 

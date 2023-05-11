@@ -7,11 +7,8 @@ import {
 	FastifyAdapter,
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-// import cors from 'cors';
 
 async function bootstrap() {
-	const t = require('cors');
-
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
@@ -42,27 +39,13 @@ async function bootstrap() {
 		],
 	});
 
+	//* Change line 44 => origin: ['http://localhost:4200'],
 	app.enableCors({
-		origin: [
-			'*',
-			'https://www.google.com',
-			'http://localhost:4200',
-			'http://localhost:4200/signin',
-		],
-		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		origin: ['https://social-wires.web.app', 'http://localhost:4200'],
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'],
+		credentials: true,
 	});
 
-	app.use(
-		t({
-			origin: [
-				'*',
-				'https://www.google.com',
-				'http://localhost:4200',
-				'http://localhost:4200/signin',
-			],
-			methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-		}),
-	);
 	await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();

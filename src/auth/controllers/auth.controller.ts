@@ -33,16 +33,6 @@ export class AuthController {
 		@Req() req: Request,
 		@Res({ passthrough: true }) response: FastifyReply,
 	) {
-		console.log('req1: ', req.headers);
-		console.log('response1: ', response.getHeaders());
-
-		response.header('access-control-allow-origin', '*');
-		response.header('access-control-allow-credentials', true);
-
-		console.log('req2: ', req.headers);
-		console.log('response2: ', response.getHeaders());
-		// response.header('access-control-allow-origin', '*');
-
 		const user = req.user as User;
 		return this.authService.generateJWT(user, response);
 	}
@@ -56,7 +46,7 @@ export class AuthController {
 	async user(@Req() req: Request) {
 		const cookie = req.cookies['jwt'];
 		if (!cookie) {
-			throw new UnauthorizedException('not allow');
+			throw new UnauthorizedException('not allow code 0001');
 		}
 		return await this.authService.userJWT(cookie);
 	}
