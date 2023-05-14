@@ -17,6 +17,7 @@ import { User } from '../../users/entities/user.entity';
 import { ApiKeyGuard } from '../guards/api-key.guard';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { FastifyReply } from 'fastify';
+import { PayloadToken } from '../models/token.model';
 @ApiTags('Auth')
 @UseGuards(ApiKeyGuard)
 @Controller('auth')
@@ -43,24 +44,17 @@ export class AuthController {
 		summary: 'JWT token',
 		description: 'Return info user token jwt',
 	})
-	async user(@Req() req: Request) {
-		const cookie = req.cookies['jwt'];
-		if (!cookie) {
-			throw new UnauthorizedException('not allow code 0001');
-		}
-		return await this.authService.userJWT(cookie);
-	}
-
-	@UseGuards(JwtAuthGuard)
-	@Post('logout')
-	@ApiOperation({
-		summary: 'Logout',
-		description: 'Return succes logout user',
-	})
-	async logout(@Res({ passthrough: true }) response: FastifyReply) {
-		response.cookie('jwt', '', { httpOnly: true, path: '/' });
-		return {
-			message: 'Succes',
-		};
+	user(@Req() req: Request) {
+		const user = req.user as PayloadToken;
+		return user;
 	}
 }
+
+
+// export const environment = {
+// 	production: true,
+// 	apiEndPoint: '',
+// 	apiKey: 'ABC123TProd',
+// 	urlServices: 'https://backend-social-wires.vercel.app',
+// 	environment: 'production',
+// };

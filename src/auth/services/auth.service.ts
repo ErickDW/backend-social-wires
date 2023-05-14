@@ -29,19 +29,9 @@ export class AuthService {
 	generateJWT(user: User, res: FastifyReply) {
 		const payload: PayloadToken = { role: user.role, nick: user.nickName };
 		const jwt = this.jwtService.sign(payload);
-		res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
-		res.signCookie(jwt);
 		return {
 			message: 'Succes',
 			jwt: jwt,
 		};
-	}
-
-	async userJWT(cookie: string) {
-		const dat: PayloadToken = await this.jwtService.verifyAsync(cookie);
-		if (!dat) {
-			throw new UnauthorizedException('not allow code 0002');
-		}
-		return dat;
 	}
 }
