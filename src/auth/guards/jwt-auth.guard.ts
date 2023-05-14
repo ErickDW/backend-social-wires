@@ -20,11 +20,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 		if (isPublic) {
 			return true;
 		}
-		const request: FastifyRequest = context.switchToHttp().getRequest();
-		const cookie = request.cookies['jwt'];
-		if (!cookie) {
-			throw new UnauthorizedException('not allow');
-		}
 		return super.canActivate(context);
 	}
 }
